@@ -165,7 +165,6 @@ with tabs[1]:
 
 
 # -------- ML RESULTS TAB ******** (Dummy UI - real code same logic) ------
-# -------- ML RESULTS TAB --------
 with tabs[2]:
     st.subheader("🤖 Train ML Classifiers")
 
@@ -182,14 +181,18 @@ with tabs[2]:
 
         if st.button("🚀 Train Models"):
             with st.spinner("Training models... Please wait ⏳"):
-                
+
                 from sklearn.model_selection import train_test_split
                 from sklearn.feature_extraction.text import TfidfVectorizer
                 from sklearn.naive_bayes import MultinomialNB
                 from sklearn.metrics import accuracy_score
+                from sklearn.preprocessing import LabelEncoder
+
+                # Encode labels properly
+                label_encoder = LabelEncoder()
+                y = label_encoder.fit_transform(df["Label"])
 
                 X = df["Statement"]
-                y = df["Label"]
 
                 # Vectorizer
                 vectorizer = TfidfVectorizer(stop_words="english")
