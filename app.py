@@ -165,13 +165,50 @@ with tabs[1]:
 
 
 # -------- ML RESULTS TAB ******** (Dummy UI - real code same logic) ------
+# -------- ML RESULTS TAB --------
 with tabs[2]:
     st.subheader("🤖 Train ML Classifiers")
+
     if "dataset" not in st.session_state:
         st.warning("⚠ Please scrape data first!")
     else:
-        st.success("Dataset ready. ML code preserved (same logic).")
-        st.write("Model performance will appear here when executed.")
+        df = st.session_state["dataset"]
+        st.success(f"Dataset loaded ✔ ({len(df)} records)")
+
+        feature_type = st.selectbox(
+            "Select Feature Extraction Method:",
+            ["Lexical", "Syntactic", "Semantic", "Pragmatic"]
+        )
+
+        if st.button("🚀 Train Models"):
+            with st.spinner("Training models... Please wait ⏳"):
+                
+                from sklearn.model_selection import train_test_split
+                from sklearn.feature_extraction.text import TfidfVectorizer
+                from sklearn.naive_bayes import MultinomialNB
+                from sklearn.metrics import accuracy_score
+
+                X = df["Statement"]
+                y = df["Label"]
+
+                # Vectorizer
+                vectorizer = TfidfVectorizer(stop_words="english")
+                X_vec = vectorizer.fit_transform(X)
+
+                X_train, X_test, y_train, y_test = train_test_split(
+                    X_vec, y, test_size=0.2, random_state=42
+                )
+
+                # Model
+                model = MultinomialNB()
+                model.fit(X_train, y_train)
+
+                preds = model.predict(X_test)
+                acc = accuracy_score(y_test, preds)
+
+                st.subheader("📊 Result")
+                st.success(f"Model Accuracy: **{acc*100:.2f}%**")
+                st.write("Model successfully trained and tested ✔")
 
 # -------- FACT CHECK TAB --------
 with tabs[3]:
