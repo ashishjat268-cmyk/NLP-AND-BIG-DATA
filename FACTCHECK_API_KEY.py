@@ -3,7 +3,7 @@ import requests
 from urllib.parse import quote_plus
 
 # --- Preserve existing logic: allow hardcoded API key as before but prefer st.secrets if available ---
-DEFAULT_API_KEY = "AIzaSyDmFciPOWcIuxDKilN1WO-SmMkwXUxZrUE"
+DEFAULT_API_KEY = "AIzaSyCJNlGpYxoV83OnOwXyl7lKD1FPPild6zs"
 API_KEY = st.secrets.get("FACTCHECK_API_KEY", DEFAULT_API_KEY) if hasattr(st, "secrets") else DEFAULT_API_KEY
 
 st.set_page_config(page_title="Global FactCheck Network", layout="wide", initial_sidebar_state="collapsed")
